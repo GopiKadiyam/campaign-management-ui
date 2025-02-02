@@ -12,3 +12,18 @@ export interface LoginFailure{
   loginFailedRes: any,
   msg: string
 }
+
+export interface GlobalError {
+  status: string;
+  errorMsg: string;
+  errorType: string;
+  path: string;
+  timestamp: string;
+  errors: any
+}
+
+export interface SignUpFailure{
+  signUpRequest: any, 
+  signUpError: GlobalError,
+  msg: string
+}

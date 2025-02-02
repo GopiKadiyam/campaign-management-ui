@@ -6,6 +6,7 @@ import { UserDetails } from '../../interfaces/user.interface';
 import { ApiService } from '../../@core/services/api.service';
 import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
+import { API_URL } from '../../app.constant';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class BasicAuthService {
   constructor(private apiService: ApiService) { }
 
   login(loginParams: Login): Observable<UserDetails> {
-    return this.apiService.post(`${environment.backendUrl}/api/auth/sign-in`,loginParams,{ withCredentials: true });
+    return this.apiService.doPost<UserDetails>(API_URL.authURLs.signIn, loginParams);
     // return of({
     //   "id": 11,
     //   "username": "admin@gmail.com",
@@ -30,24 +31,20 @@ export class BasicAuthService {
   }
 
   isAuthenticated(): Observable<boolean> {
-    return this.apiService.get('http://localhost:8080/api/auth/check-auth')
-    .pipe(
-      map(response => response?.authenticated),
-      catchError(() => of(false)) // If error occurs, return false (unauthenticated)
-    );
+    return this.apiService.doGet<{ authenticated: boolean }>(API_URL.authURLs.checkAuth)
+      .pipe(
+        map(response => response?.authenticated),
+        catchError(() => of(false)) // If error occurs, return false (unauthenticated)
+      );
   }
 
-  signUp(signUpParams: SignUp): Observable<SignUp> {
-    ///return this.http.post<SignUp>('/auth/sign-up', signUpParams);
-    return of({
-      firstName: "gopi ",
-      middleName: "krishna ",
-      lastName: "kadiyam",
-      email: "learnergopikrishna@gmail.com",
-      phone: "9182353051",
-      password: "281314",
-      confirmPassword: "281314"
-    })
+  test(): Observable<any>{
+    return this.apiService.doGet<any>(API_URL.authURLs.test);
+  }
+
+  signUp(signUpParams: SignUp): Observable<any> {
+    return this.apiService.doPost<any>(API_URL.authURLs.signUp, signUpParams);
+
   }
 
   getProfile(): Observable<UserDetails> {

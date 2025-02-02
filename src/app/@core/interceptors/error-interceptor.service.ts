@@ -18,7 +18,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
           // ✅ If 401 Unauthorized, redirect to login page
           this.router.navigate(['/auth']);
         }
-        return throwError(() => error);
+        return throwError(error);
       })
     );
   }

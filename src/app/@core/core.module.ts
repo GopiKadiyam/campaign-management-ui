@@ -56,6 +56,8 @@ import { ApiService } from './services/api.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from './interceptors/auth-interceptor.service';
 import { ErrorInterceptorService } from './interceptors/error-interceptor.service';
+import { BaseUrlInterceptorService } from './interceptors/base-url-interceptor.service';
+import { AuthGaurdService } from './gaurds/auth-gaurd.service';
 
 const socialLinks = [
   {
@@ -98,6 +100,12 @@ const DATA_SERVICES = [
 
 
   {provide: ApiService,useClass: ApiService},
+  {provide: AuthGaurdService,useClass: AuthGaurdService},
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: BaseUrlInterceptorService,
+    multi: true
+  },
   {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,

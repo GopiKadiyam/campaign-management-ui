@@ -16,3 +16,8 @@ export const selectLoginFailure = createSelector(
   userState,
   (state: UserState) => state.loginFailure
 );
+
+export const selectSignUpFailure = createSelector(
+  userState,
+  (state: UserState) => state.signUpFailure
+);

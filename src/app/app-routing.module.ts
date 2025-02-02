@@ -1,14 +1,13 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AuthGaurdService } from './gaurds/auth-gaurd.service';
+import { AuthGaurdService } from './@core/gaurds/auth-gaurd.service';
 
 export const routes: Routes = [
-
   {
     path: 'pages',
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
-    canLoad:[AuthGaurdService] // Apply AuthGuard to lazy-loaded module
+    canLoad:[AuthGaurdService]
   },
   {
     path: 'auth',

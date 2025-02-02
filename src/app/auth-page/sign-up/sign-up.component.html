@@ -1,13 +1,28 @@
 <div class="container" #container>
   <div class="form-container sign-in-container">
-    <form (submit)="signUp($event)">
-      <input type="email" placeholder="Email" required />
-      <input type="name" placeholder="Full Name" required />
-      <input type="contactNum" placeholder="Contact Number" required />
-      <input type="password" placeholder="Password" required />
-      <input type="cnfPassword" placeholder="Confirm Password" required />
-      
-      <button type="submit">Sign UP</button>
+    <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+      <input type="username" placeholder="User Name" formControlName="username" [value]="(signUpFailure$ | async)?.signUpRequest?.username" required />
+      <span *ngIf="!username.valid && (username.dirty ||username.touched)" style="color: red;">username should be unique</span>
+      <input type="email" placeholder="Email" formControlName="email" [value]="(signUpFailure$ | async)?.signUpRequest?.email" required />
+      <span *ngIf="!email.valid && (email.dirty ||email.touched)" style="color: red;">email should be unique</span>
+      <input type="password" placeholder="Password" formControlName="password" [value]="(signUpFailure$ | async)?.signUpRequest?.password" required />
+      <ng-container *ngIf="password?.touched && password?.invalid">
+        <span *ngIf="password?.errors?.required" style="color: red;">Password is required.</span>
+        <span *ngIf="password?.errors?.minLength" style="color: red;">{{ password?.errors?.minLength }}</span>
+        <span *ngIf="password?.errors?.upperCase" style="color: red;">{{ password?.errors?.upperCase }}</span>
+        <span *ngIf="password?.errors?.numeric" style="color: red;">{{ password?.errors?.numeric }}</span>
+        <span *ngIf="password?.errors?.specialChar" style="color: red;">{{ password?.errors?.specialChar }}</span>
+      </ng-container>
+      <!-- <input type="cnfPassword" placeholder="Confirm Password" required /> -->
+      <button type="submit" [disabled]="signUpForm.invalid" nbButton>Sign In</button>
+      <ng-container *ngIf="(signUpFailure$ | async) as suf">
+        <p  style="color: red;">{{ suf?.msg | json }}</p> 
+        
+        <ul *ngIf="suf?.signUpError?.errors">
+          <li *ngFor="let err of suf?.signUpError?.errors | keyvalue" style="color: red;">{{err.key}} --> {{err.value}}</li>
+        </ul> 
+        
+      </ng-container>
     </form>
   </div>
 
@@ -15,11 +30,6 @@
     <div class="overlay">
       <div class="overlay-panel overlay-right">
         <h1>Sign up</h1>
-        <!-- <div class="social-container">
-          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-          <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-        </div> -->
         <a [routerLink]="['../']" style="margin-top: 8vh; color: white">If you are registered memeber. Click here to sign in</a>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { ProfitChart } from '../../../@core/data/profit-chart';
 import { OrderProfitChartSummary, OrdersProfitChartData } from '../../../@core/data/orders-profit-chart';
 import { ApiService } from '../../../@core/services/api.service';
 import { environment } from '../../../../environments/environment';
+import { API_URL } from '../../../app.constant';
 
 @Component({
   selector: 'ngx-ecommerce-charts',
@@ -33,7 +34,7 @@ export class ECommerceChartsPanelComponent implements OnDestroy {
     //     this.chartPanelSummary = summary;
     //   });
 
-    this.apiService.get(`http://localhost:8080/api/test/admin`)
+    this.apiService.doGet<any>(API_URL.featureURLs.adminUrl)
       .pipe(takeWhile(() => this.alive))
       .subscribe((summary) => {
         this.chartPanelSummary = summary;

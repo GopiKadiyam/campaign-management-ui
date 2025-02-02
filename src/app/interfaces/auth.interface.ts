@@ -1,5 +1,5 @@
 export interface Login {
-  emailOrPhone: string;
+  username: string;
   password: string;
 }
 
@@ -9,11 +9,7 @@ export interface LoginFailed {
 }
 
 export interface SignUp {
-  firstName: string;
-  middleName?: string
-  lastName: string;
+  username: string;
   email: string;
-  phone?: string;
   password: string;
-  confirmPassword: string;
 }

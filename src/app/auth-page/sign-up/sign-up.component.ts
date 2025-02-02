@@ -1,5 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as authActions from "../../states/auth/auth.actions"
+import { passwordValidator } from '../utils/password.validator';
+import { AppState } from '../../states/app.state';
+import { Store } from '@ngrx/store';
+import { SignUp } from '../../interfaces/auth.interface';
+import { SignUpFailure } from '../../interfaces/user.interface';
+import { Observable } from 'rxjs';
+import { UserState } from '../../states/auth/auth.reducer';
+import { selectSignUpFailure } from '../../states/auth/auth.selectors';
 
 @Component({
   selector: 'ngx-sign-up',
@@ -7,15 +16,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent {
-constructor(
-    private _router: Router
-  ) { }
 
-  signUp(event: Event): void {
-    event.preventDefault();
-    // Add sign-in logic here
-    console.log('sign up submitted');
+  signUpForm = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, passwordValidator()]),
+  });
 
-    this._router.navigate(['auth']);
+  get username(){
+    return this.signUpForm.get('username');
   }
+
+  get email(){
+    return this.signUpForm.get('email');
+  }
+
+  get password(){
+    return this.signUpForm.get('password');
+  }
+
+  signUpJson: any;
+  signUpFailure$: Observable<SignUpFailure | null> ;
+
+  constructor(private store: Store<{ userInfo: UserState }>) {
+    this.signUpFailure$ = this.store.select(selectSignUpFailure);
+   }
+
+  signUp(): void {
+    this.signUpJson = this.signUpForm.value;
+    this.store.dispatch(authActions.signUp({signUPReq: this.signUpJson}));
+  }
+
 }

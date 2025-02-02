@@ -9,6 +9,7 @@ import { AppState } from "../app.state";
 import { of, throwError } from "rxjs";
 import { hideLoader, showLoader } from "../loaders/loader.actions";
 import { LoginFailure } from "../../interfaces/user.interface";
+import { Login } from "../../interfaces/auth.interface";
 
 @Injectable()
 export class AuthEffects {
@@ -41,7 +42,20 @@ export class AuthEffects {
             )
         })
     ));
-  
+
+    // signUp$ = createEffect(() => this.actions$.pipe(
+    //     ofType(authActions.signUp),
+    //     switchMap(action => this.authService.signUp(action.params).pipe(
+    //                 map((response) => authActions.signUpSuccess({ params: response })),
+    //                 catchError((error) => {
+    //                     console.error(error)
+    //                     return of(authActions.signUpFailure({ params: { signUpRequest: action.params, signUpError: error, msg: "Sign Up failed gopi" } }))
+    //                 })
+    //                 )
+    //             )
+    // ));
+
+
     loginSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(authActions.loginSuccess),
@@ -60,7 +74,7 @@ export class AuthEffects {
         this.actions$.pipe(
             ofType(authActions.loginFailed),
             tap(({ loginRequest, loginFailedRes, msg }) => {
-                console.error(`Login failed for ${loginRequest?.emailOrPhone}: ${loginFailedRes}`);
+                console.error(`Login failed for ${loginRequest?.username}: ${loginFailedRes}`);
                 this.router.navigateByUrl("/auth", { state: { loginRequest, loginFailedRes, msg } })
             }),
             map(({ loginRequest, loginFailedRes, msg }) => {
@@ -74,21 +88,62 @@ export class AuthEffects {
         ),
     );
 
+    // signUp$ = createEffect(() => this.actions$.pipe(
+    //     ofType(authActions.signUp),
+    //     switchMap(action => {
+    //         const login: Login = {
+    //             "username": "superadmin",
+    //             "password": "Fuckoff@20q2"
+    //         }
+    //         return this.authService.signUp(action?.signUPReq).pipe(
+    //             tap(res => {
+    //                 console.log("signUp$")
+    //                 console.log(res)
+    //                 this.router.navigateByUrl('/auth')
+    //             }),
+    //             catchError(error => throwError(error))
+    //         )
 
+    //     })),
+    //     { dispatch: false });
 
-    signUp$ = createEffect(() => this.actions$.pipe(
-        ofType(authActions.signUp),
-        mergeMap(action => this.authService.signUp(action.params).pipe(
-            tap(res => (!!res.email && this.router.navigateByUrl('/auth/login'))),
-            catchError(error => throwError(error))
-        ))),
+    signUp$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(authActions.signUp), // Trigger on login action
+            switchMap(action =>
+                this.authService.signUp(action?.signUPReq).pipe(
+                    map(response => {
+                        console.log("signup success gopi")
+                        console.log(response)
+                        return authActions.signUpSuccess({ params: response });
+                    }),
+                    catchError((errorResponse) => {
+                        const signUpFailureJson = { signUpRequest: action?.signUPReq, signUpError: errorResponse.error, msg: "creating account failed due to technical issues" }
+                        return of(authActions.signUpFailure({ params: signUpFailureJson }))
+                    })
+                )
+            )
+        )
+    );
+
+    signUpSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(authActions.signUpSuccess),
+        tap(action => {
+            this.router.navigateByUrl('/auth');
+        })),
         { dispatch: false });
 
-    // getProfile$ = createEffect(() => this.actions$.pipe(
-    //     ofType(authActions.GetProfile),
-    //     mergeMap(() => this.authService.getProfile().pipe(
-    //         map(user => authActions.SetUser({ user })),
-    //         catchError(error => throwError(error))
-    //     ))
-    // ));
+    signUpFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(authActions.signUpFailure),
+            tap((action) => {
+                console.error(`sign up failed for  ${action?.params?.signUpRequest}: ${action?.params?.msg}`);
+                this.router.navigateByUrl("/auth/sign-up")
+            }),
+            map((action) => {
+                return authActions.loadUserFailedMsgOnSignUpailure({ signUpFailure: action?.params })
+            })
+        ),
+    );
+
 }

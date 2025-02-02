@@ -26,8 +26,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AsyncPipe } from '@angular/common';
 import { AuthEffects } from './states/auth/auth.effects';
-import { loaderReducer } from './states/loaders/loader.reducer';
-import { AuthGaurdService } from './gaurds/auth-gaurd.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
@@ -54,7 +52,7 @@ import { CookieService } from 'ngx-cookie-service';
     AsyncPipe
   ],
   bootstrap: [AppComponent],
-  providers:[AuthGaurdService,CookieService]
+  providers:[CookieService]
 })
 export class AppModule {
 }

@@ -1,20 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { BasicAuthService } from '../services/basic-auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NbAuthSocialLink } from '@nebular/auth';
-import { AppState } from '../../states/app.state';
+import {  ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {  Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { login } from '../../states/auth/auth.actions';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as authActions from "../../states/auth/auth.actions"
-import { Login } from '../../interfaces/auth.interface';
+import * as authActions from "../../states/auth/auth.actions";
 import { passwordValidator } from '../utils/password.validator';
 import { selectLoginFailure, selectUserDetails } from '../../states/auth/auth.selectors';
 import { LoginFailure, UserDetails } from '../../interfaces/user.interface';
-import { UserData } from '../../@core/data/users';
 import { UserState } from '../../states/auth/auth.reducer';
 import { Observable } from 'rxjs';
-import { shareReplay } from 'rxjs-compat/operator/shareReplay';
+
 @Component({
   selector: 'ngx-login',
   templateUrl: './login.component.html',
@@ -35,6 +29,7 @@ export class LoginComponent implements OnInit{
   get password(){
     return this.loginForm.get('password');
   }
+
   registeringUser: any;
   loginFailure$: Observable<LoginFailure | null> ;
   userDetails$: Observable<UserDetails | null>;
@@ -54,28 +49,4 @@ export class LoginComponent implements OnInit{
   }
 
 
-
-  // isRightPanelActive = false;
-
-  // constructor(
-  //   private _router: Router
-  // ) { }
-
-  // togglePanel(isSignUp: boolean): void {
-  //   this.isRightPanelActive = isSignUp;
-  // }
-
-  // loginWithOTP(event: Event): void {
-  //   event.preventDefault();
-  //   // Add sign-up logic here
-  //   console.log('with otp');
-  //   this._router.navigate(['/pages']);
-  // }
-
-  // loginWithGmail(event: Event): void {
-  //   event.preventDefault();
-  //   // Add sign-in logic here
-  //   this._router.navigate(['/pages']);
-  //   console.log('with gmail');
-  // }
 }
