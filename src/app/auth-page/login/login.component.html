@@ -1,0 +1,102 @@
+<!-- <div
+  class="container"
+  [ngClass]="{ 'right-panel-active': isRightPanelActive }"
+  #container
+>
+  <div class="form-container sign-up-container">
+    <form (submit)="loginWithOTP($event)">
+      <h1>Login With OTP</h1>
+      <div class="social-container">
+        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <span>or use your email for registration</span>
+      <input type="contactNumber" placeholder="Registered Number" required />
+      <input type="otp" placeholder="OTP" required />
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+
+  <div class="form-container sign-in-container">
+    <form (submit)="loginWithGmail($event)">
+      <h1>Sign in</h1>
+      <div class="social-container">
+        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <span>or use your account</span>
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <a [routerLink]="['forgot-password']">Forgot your password?</a>
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back!</h1>
+        <p>To keep connected with us please login with your registered gmail</p>
+        <button class="ghost" (click)="togglePanel(false)">
+          Login with email
+        </button>
+
+        <a style="margin-top: 8vh; color: white" [routerLink]="['sign-up']"
+          >New to website? Create an account</a
+        >
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>Welcome Back!</h1>
+        <p>To keep connected with us please login with your registered phone</p>
+        <button class="ghost" (click)="togglePanel(true)">Request OTP</button>
+
+        <a style="margin-top: 8vh; color: white" [routerLink]="['sign-up']"
+          >New to website? Create an account</a
+        >
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="container" #container>
+  <div class="form-container sign-in-container">
+    <form class="login-form" (keyup.enter)="login()" (ngSubmit)="login()" [formGroup]="loginForm">
+      <h1>Sign in</h1>
+      <div class="social-container">
+        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <span>or use your account</span>
+      <input type="email" placeholder="Email/Phone" name="email" formControlName="username" [value]="(loginFailure$|async)?.loginRequest?.username" required />
+      <span *ngIf="!username.valid && (username.dirty ||username.touched)" style="color: red;">email should be unique</span>
+      <input type="password" placeholder="Password" name="password" formControlName="password"  [value]="(loginFailure$|async)?.loginRequest?.password" required />
+      <ng-container *ngIf="password?.touched && password?.invalid">
+        <span *ngIf="password?.errors?.required" style="color: red;">Password is required.</span>
+        <span *ngIf="password?.errors?.minLength" style="color: red;">{{ password?.errors?.minLength }}</span>
+        <span *ngIf="password?.errors?.upperCase" style="color: red;">{{ password?.errors?.upperCase }}</span>
+        <span *ngIf="password?.errors?.numeric" style="color: red;">{{ password?.errors?.numeric }}</span>
+        <span *ngIf="password?.errors?.specialChar" style="color: red;">{{ password?.errors?.specialChar }}</span>
+      </ng-container>
+      <a [routerLink]="['forgot-password']">Forgot your password?</a>
+      <button type="submit" [disabled]="loginForm.invalid" nbButton>Sign In</button>
+      <div *ngIf="(loginFailure$ | async) as lf">
+        <p>{{ lf?.loginFailedRes | json }}</p> 
+       </div>
+    </form>
+  </div>
+
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-right">
+        <h1>Welcome Back!</h1>
+        <p>Enter your personal details and start journey with us</p>
+        <a style="margin-top: 8vh; color: white" [routerLink]="['sign-up']"
+          >New to website? Create an account</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
