@@ -24,9 +24,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   //storing token in cookies
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const clonedRequest = req.clone({
-      withCredentials: true // Send cookies automatically
-    });
+    const clonedRequest = req.clone({ withCredentials: true});
     return next.handle(clonedRequest);
   }
 }

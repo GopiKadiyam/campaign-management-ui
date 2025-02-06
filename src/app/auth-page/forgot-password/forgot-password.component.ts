@@ -18,7 +18,7 @@ export class ForgotPasswordComponent {
     console.log('changePassword submitted');
   }
   signInLink(): void {
-    this._router.navigate(['auth']);
+    this._router.navigateByUrl('/auth');
   }
 
 }

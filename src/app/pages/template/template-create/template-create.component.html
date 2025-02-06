@@ -1,0 +1,49 @@
+<div class="row show-grid">
+    <div class="col-12 col-sm-12">
+    <nb-card>
+        <nb-card-header>Create Sender</nb-card-header>
+        <nb-card-body>
+          <form class="form-horizontal"  (keyup.enter)="createTemplate()" (ngSubmit)="createTemplate()" [formGroup]="createTemplateForm">
+            <div class="form-group row">
+                <label for="forName" class="label col-sm-3 form-control-label">Name</label>
+                <div class="col-sm-9"><input type="text" nbInput formControlName="name" fullWidth placeholder="Name"></div>
+            </div>
+            <div class="form-group row">
+                <label for="forDescription" class="label col-sm-3 form-control-labell">Description</label>
+                <textarea rows="5" nbInput formControlName="description" class="col-sm-9" fullWidth shape="round"  placeholder="Text Area"></textarea>
+            </div>
+            <div class="form-group row">
+                <label for="forSender" class="label col-sm-3 form-control-labell">Sender</label>
+                <nb-select selected="1" class="col-sm-9" formControlName="sender" placeholder="Choose Sender">
+                    <nb-option *ngFor="let senderId of senderIds;"  [value]="senderId">{{senderId}}</nb-option>
+                </nb-select>
+            </div>
+            <div class="form-group row">
+                <label for="forServiceType" class="label col-sm-3 form-control-labell">Service Type</label>
+                <nb-select selected="1" class="col-sm-9" formControlName="serviceType" placeholder="Choose Service Type">
+                    <nb-option *ngFor="let servType of serviceTypes;"  [value]="servType">{{servType}}</nb-option>
+                </nb-select>
+            </div>
+            <div class="form-group row">
+                <label for="forStatus" class="label col-sm-3 form-control-label">Status</label>
+                <div class="col-sm-6"></div>
+                <div class="col-sm-3"><nb-toggle formControlName="status"></nb-toggle></div>
+            </div>
+            <div class="form-group row">
+                <label for="forTemplateId" class="label col-sm-3 form-control-labell">Template ID</label>
+                <div class="col-sm-9"><input type="text" nbInput formControlName="templateId" fullWidth placeholder="Template ID"></div>
+            </div>
+            <div class="form-group row">
+                <label for="forTemplateBody" class="label col-sm-3 form-control-labell">Template Body</label>
+                <textarea rows="5" nbInput formControlName="templateBody" class="col-sm-9" fullWidth shape="round"  placeholder="Text Area"></textarea>
+            </div>
+            <div class="form-group row">
+                <div class="offset-sm-3 col-sm-9">
+                  <button type="submit" nbButton status="primary">Create Template</button>
+                </div>
+              </div>
+          </form>  
+        </nb-card-body>
+    </nb-card>
+    </div>
+</div>

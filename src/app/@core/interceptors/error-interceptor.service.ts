@@ -16,7 +16,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           // ✅ If 401 Unauthorized, redirect to login page
-          this.router.navigate(['/auth']);
+          this.router.navigateByUrl('/auth');
         }
         return throwError(error);
       })

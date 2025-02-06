@@ -26,7 +26,7 @@ export class BaseUrlInterceptorService  implements HttpInterceptor{
   }
 
   private isUrlMatch(urlParam: string){
-    return [...Object.values(API_URL.authURLs),...Object.values(API_URL.featureURLs)].includes(urlParam);
+    return [...Object.values(API_URL.authURLs),...Object.values(API_URL.senderURLs),...Object.values(API_URL.templateURLs),...Object.values(API_URL.featureURLs)].includes(urlParam);
   }
 
 }

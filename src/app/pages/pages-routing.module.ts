@@ -19,6 +19,21 @@ const routes: Routes = [{
       component: DashboardComponent,
     },
     {
+      path: 'campaigns',
+      loadChildren: () => import('./campaign/campaign.module')
+      .then(m => m.CampaignModule)
+    },
+    {
+      path: 'templates',
+      loadChildren: () => import('./template/template.module')
+        .then(m => m.TemplateModule)
+    },
+    {
+      path: 'senders',
+      loadChildren: () => import('./sender/sender.module')
+        .then(m => m.SenderModule)
+    },
+    {
       path: 'layout',
       loadChildren: () => import('./layout/layout.module')
         .then(m => m.LayoutModule),

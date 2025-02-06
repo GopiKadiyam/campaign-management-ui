@@ -28,17 +28,17 @@ export class ECommerceChartsPanelComponent implements OnDestroy {
   @ViewChild('profitChart', { static: true }) profitChart: ProfitChartComponent;
 
   constructor(private ordersProfitChartService: OrdersProfitChartData,private apiService:ApiService) {
-    // this.ordersProfitChartService.getOrderProfitChartSummary()
-    //   .pipe(takeWhile(() => this.alive))
-    //   .subscribe((summary) => {
-    //     this.chartPanelSummary = summary;
-    //   });
-
-    this.apiService.doGet<any>(API_URL.featureURLs.adminUrl)
+    this.ordersProfitChartService.getOrderProfitChartSummary()
       .pipe(takeWhile(() => this.alive))
       .subscribe((summary) => {
         this.chartPanelSummary = summary;
       });
+
+    // this.apiService.doGet<any>(API_URL.featureURLs.adminUrl)
+    //   .pipe(takeWhile(() => this.alive))
+    //   .subscribe((summary) => {
+    //     this.chartPanelSummary = summary;
+    //   });
 
     this.getOrdersChartData(this.period);
     this.getProfitChartData(this.period);

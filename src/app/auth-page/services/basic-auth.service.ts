@@ -38,9 +38,9 @@ export class BasicAuthService {
       );
   }
 
-  test(): Observable<any>{
-    return this.apiService.doGet<any>(API_URL.authURLs.test);
-  }
+  // test(): Observable<any>{
+  //   return this.apiService.doGet<any>(API_URL.authURLs.test);
+  // }
 
   signUp(signUpParams: SignUp): Observable<any> {
     return this.apiService.doPost<any>(API_URL.authURLs.signUp, signUpParams);

@@ -62,7 +62,7 @@ export class AuthEffects {
             tap(({ loginSuccessRes }) => {
                 console.info(`Login success for ${loginSuccessRes?.username}: ${loginSuccessRes}`);
                 // localStorage.setItem("access_token",loginSuccessRes.accessToken);
-                this.router.navigateByUrl("/pages/dashboard");
+                this.router.navigate(["../app/dashboard"]);
             }),
             map(({ loginSuccessRes }) => {
                 return authActions.loadUserDataOnLoginSuccess({ loginSuccessRes })

@@ -4,7 +4,7 @@ import { AuthGaurdService } from './@core/gaurds/auth-gaurd.service';
 
 export const routes: Routes = [
   {
-    path: 'pages',
+    path: 'app',
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
     canLoad:[AuthGaurdService]

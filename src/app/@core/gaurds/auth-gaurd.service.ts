@@ -30,12 +30,12 @@ export class AuthGaurdService implements CanLoad {
         if (authenticated) {
           return true; // Allow route loading
         } else {
-          this.router.navigate(['/auth']); // Redirect to login if not authenticated
+          this.router.navigateByUrl('/auth'); // Redirect to login if not authenticated
           return false;
         }
       }),
       catchError(() => {
-        this.router.navigate(['/auth']); // Redirect on error
+        this.router.navigateByUrl('/auth'); // Redirect on error
         return of(false);
       })
     );
