@@ -5,6 +5,7 @@ export interface UserDetails {
   roles?: string[];
   accessToken?: string;
   tokenType?: string;
+  picture?: string
 }
 
 export interface LoginFailure{
@@ -50,4 +51,21 @@ export interface Template {
   activeStatusFlag: boolean,
   createdOn:string,
   updatedOn:string
+}
+
+export interface Campaign{
+  id:number,
+  name:string,
+  description: string,
+  serviceType: SERVICE_TYPE,
+  senderId: string,
+  templateId: string,
+  
+  flashFlag: boolean,
+  scheduleAt: string
+  campaignDataId: string;
+}
+
+export interface CreateCampaignResponse{
+  campaignID: number
 }

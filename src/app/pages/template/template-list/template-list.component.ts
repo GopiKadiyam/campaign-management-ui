@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { ApiService } from '../../../@core/services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { Template } from '../../../interfaces/user.interface';
 import { API_URL } from '../../../app.constant';
 

@@ -1,1 +1,120 @@
-<p>create-campaign works!</p>
+<div class="row show-grid">
+    <div class="col-12 col-sm-12">
+    <nb-card [accent]="(createCampaignForm?.invalid || campaignCreationFailed)? 'danger' : 'info'"  [nbSpinner]="createCampaignLoading"
+            nbSpinnerStatus="primary"
+            nbSpinnerSize="large"
+            nbSpinnerMessage="creating sender is in progress ...">
+        <nb-card-header>Create Campaign</nb-card-header>
+        <nb-card-body>
+          <form class="form-horizontal"  (keyup.enter)="createCampaign()" (ngSubmit)="createCampaign()" [formGroup]="createCampaignForm">
+            <div class="form-group row">
+                <label for="forName" class="label col-sm-3 form-control-label">Name</label>
+                <div class="col-sm-9">
+                    <input type="text" nbInput formControlName="name" fullWidth placeholder="Name">
+                    <span *ngIf="!name.valid && (name.dirty ||name.touched)" style="color: red;">name is mandatory and unique</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="forDescription" class="label col-sm-3 form-control-labell">Description</label>
+                <div class="col-sm-9">
+                    <textarea rows="5" nbInput formControlName="description" fullWidth shape="round"  placeholder="Text Area"></textarea>
+                    <span *ngIf="!description.valid && (description.dirty ||description.touched)" style="color: red;">description is mandatory</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="forServiceType" class="label col-sm-3 form-control-labell">Service Type</label>
+                <div class="col-sm-9">
+                    <nb-select selected="1" formControlName="serviceType" placeholder="Choose Service Type">
+                        <nb-option *ngFor="let servType of serviceTypes;"  [value]="servType">{{servType}}</nb-option>
+                    </nb-select>
+                    <span *ngIf="!serviceType.valid && (serviceType.dirty ||serviceType.touched)" style="color: red;">serviceType is mandatory</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="forSenderId" class="label col-sm-3 form-control-labell">Sender</label>
+                <div class="col-sm-9">
+                    <nb-select selected="1" formControlName="senderId" placeholder="Choose Sender">
+                        <nb-option *ngFor="let senderId of senderIds;"  [value]="senderId">{{senderId}}</nb-option>
+                    </nb-select>
+                    <span *ngIf="senderIds?.length == 0" style="color: red;">
+                        Unable to load senderIds . Please try again
+                    </span>
+                    <span *ngIf="!senderId.valid && (senderId.dirty ||senderId.touched)" style="color: red;">sender is mandatory</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="forTemplate" class="label col-sm-3 form-control-labell">Sender</label>
+                <div class="col-sm-9">
+                    <nb-select selected="1" formControlName="templateId" placeholder="Choose Template">
+                        <nb-option *ngFor="let templateId of templateIds;"  [value]="templateId">{{templateId}}</nb-option>
+                    </nb-select>
+                    <span *ngIf="senderId!==null && senderId!=undefined && templateIds?.length == 0 " style="color: red;">
+                        <strong>{{senderId?.value}}</strong> don't have any template Ids. Please check once
+                    </span>
+                    <span *ngIf="templateIds?.length!=0 && templateId.invalid && (templateId.dirty ||templateId.touched)" style="color: red;">template is mandatory</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="forScheduleAt" class="label col-sm-3 form-control-labell">Scheduler At</label>
+                <div class="col-sm-9">
+                    <input nbInput placeholder="Pick Schedule Date"  formControlName="scheduleAt" [nbDatepicker]="dateTimePicker">
+                    <nb-date-timepicker withSeconds #dateTimePicker></nb-date-timepicker>
+            <!-- <input nbInput formControlName="scheduleAt" placeholder="Pick Schedule Date" [nbDatepicker]="formpicker">
+             <nb-datepicker #formpicker></nb-datepicker> -->
+                    <span *ngIf="!scheduleAt.valid && (scheduleAt.dirty ||scheduleAt.touched)" style="color: red;">scheduleAt is mandatory</span>
+                </div>                
+            </div>
+            <div class="form-group row">
+                <label for="forFlashFlag" class="label col-sm-3 form-control-labell">Flash Flag</label>
+                <div class="col-sm-9">
+                    <nb-toggle formControlName="flashFlag" placeholder="Flash Flag"></nb-toggle>
+                    <span *ngIf="!flashFlag.valid && (flashFlag.dirty ||flashFlag.touched)" style="color: red;">flashFlag is mandatory</span>
+                </div>                
+            </div>
+            
+
+            <div class="form-group row">
+                <div class="offset-sm-3 col-sm-9">
+                    <nb-card>
+                        <nb-card-header>Campaign File</nb-card-header>
+                        <nb-card-body>
+                            <div class="drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+                                <p>Drag and drop files here</p>
+                                <input type="file" #fileInput multiple (change)="onFileInputChange($event)" nbInput status="warning" [disabled]="files?.length==1">
+                            </div>
+                        </nb-card-body>
+                        <nb-card-footer>
+                            <nb-accordion *ngIf="files.length">
+                                <nb-accordion-item *ngFor="let file of files;let idx = index">
+                                  <nb-accordion-item-header>
+                                    <div class="form-group row">
+                                        <div class="col-sm-9">
+                                            {{ file?.name }}
+                                        </div>  
+                                        <div class="col-sm-3">
+                                            <nb-icon icon="close-outline" (click)="removeFileByIndex(idx)"></nb-icon>
+                                        </div>  
+                                    </div>
+                                  </nb-accordion-item-header>
+                                  <nb-accordion-item-body>
+                                    A nebula is an interstellar cloud of dust, hydrogen, helium and other ionized gases.
+                                    Originally, nebula was a name for any diffuse astronomical object,
+                                    including galaxies beyond the Milky Way.
+                                  </nb-accordion-item-body>
+                                </nb-accordion-item>
+                            </nb-accordion>
+                        </nb-card-footer>
+                    </nb-card>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="offset-sm-3 col-sm-9">
+                  <button type="submit" nbButton [disabled]="createCampaignForm?.invalid || files?.length!==1" status="primary">Create Campaign</button>
+                </div>
+            </div>
+          </form>  
+        </nb-card-body>
+    </nb-card>
+    </div>
+</div>

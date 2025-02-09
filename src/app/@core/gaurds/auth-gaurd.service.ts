@@ -3,7 +3,7 @@ import { CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { BasicAuthService } from '../../auth-page/services/basic-auth.service';
+import { BasicAuthService } from '../../services/basic-auth.service';
 
 @Injectable({
   providedIn: 'root'

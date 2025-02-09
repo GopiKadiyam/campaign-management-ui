@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { BasicAuthService } from "../../auth-page/services/basic-auth.service";
+import { BasicAuthService } from "./../../services/basic-auth.service";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import * as authActions from "./auth.actions";
@@ -9,7 +9,6 @@ import { AppState } from "../app.state";
 import { of, throwError } from "rxjs";
 import { hideLoader, showLoader } from "../loaders/loader.actions";
 import { LoginFailure } from "../../interfaces/user.interface";
-import { Login } from "../../interfaces/auth.interface";
 
 @Injectable()
 export class AuthEffects {
@@ -60,7 +59,7 @@ export class AuthEffects {
         this.actions$.pipe(
             ofType(authActions.loginSuccess),
             tap(({ loginSuccessRes }) => {
-                console.info(`Login success for ${loginSuccessRes?.username}: ${loginSuccessRes}`);
+               // console.info(`Login success for ${loginSuccessRes?.username}: ${loginSuccessRes}`);
                 // localStorage.setItem("access_token",loginSuccessRes.accessToken);
                 this.router.navigate(["../app/dashboard"]);
             }),
@@ -74,7 +73,7 @@ export class AuthEffects {
         this.actions$.pipe(
             ofType(authActions.loginFailed),
             tap(({ loginRequest, loginFailedRes, msg }) => {
-                console.error(`Login failed for ${loginRequest?.username}: ${loginFailedRes}`);
+                //console.error(`Login failed for ${loginRequest?.username}: ${loginFailedRes}`);
                 this.router.navigateByUrl("/auth", { state: { loginRequest, loginFailedRes, msg } })
             }),
             map(({ loginRequest, loginFailedRes, msg }) => {

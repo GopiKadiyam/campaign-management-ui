@@ -25,8 +25,47 @@ export class BaseUrlInterceptorService  implements HttpInterceptor{
     );
   }
 
-  private isUrlMatch(urlParam: string){
-    return [...Object.values(API_URL.authURLs),...Object.values(API_URL.senderURLs),...Object.values(API_URL.templateURLs),...Object.values(API_URL.featureURLs)].includes(urlParam);
+  private isUrlMatch(targetPath: string): boolean {
+    const paths = [...Object.values(API_URL.authURLs),...Object.values(API_URL.senderURLs),...Object.values(API_URL.templateURLs),...Object.values(API_URL.campaignURLs)];
+    for (const path of paths) {
+      // 1. Check for exact match (no placeholders)
+      if (path === targetPath) {
+        return true;
+      }
+  
+      // 2. Check for match with placeholders replaced
+      const pathParts = path.split("/");
+      const targetParts = targetPath.split("/");
+  
+      if (pathParts.length !== targetParts.length) {
+        continue; // Length mismatch, can't be a match
+      }
+  
+      let match = true;
+      for (let i = 0; i < pathParts.length; i++) {
+        const pathPart = pathParts[i];
+        const targetPart = targetParts[i];
+  
+        // Check if pathPart is a placeholder (e.g., {id}, {name})
+        if (pathPart.startsWith("{") && pathPart.endsWith("}")) {
+          // It's a placeholder, so it matches any non-empty targetPart
+          if (targetPart === "") { // Or check for null/undefined if needed
+            match = false;
+            break;
+          }
+          continue; // Placeholder matches, move to the next part
+        } else if (pathPart !== targetPart) {
+          match = false;
+          break;
+        }
+      }
+  
+      if (match) {
+        return true; // Found a match!
+      }
+    }
+  
+    return false; // No match found
   }
 
 }

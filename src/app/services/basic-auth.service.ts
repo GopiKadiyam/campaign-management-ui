@@ -1,12 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Login, SignUp } from '../../interfaces/auth.interface';
 import { Observable, of } from 'rxjs';
-import { UserDetails } from '../../interfaces/user.interface';
-import { ApiService } from '../../@core/services/api.service';
-import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
-import { API_URL } from '../../app.constant';
+import { UserDetails } from '../interfaces/user.interface';
+import { Login, SignUp } from '../interfaces/auth.interface';
+import { ApiService } from './api.service';
+import { API_URL } from '../app.constant';
 
 @Injectable({
   providedIn: 'root'
@@ -17,17 +15,6 @@ export class BasicAuthService {
 
   login(loginParams: Login): Observable<UserDetails> {
     return this.apiService.doPost<UserDetails>(API_URL.authURLs.signIn, loginParams);
-    // return of({
-    //   "id": 11,
-    //   "username": "admin@gmail.com",
-    //   "email": "admin@gmail.com",
-    //   "roles": [
-    //     "ROLE_ADMIN"
-    //   ],
-    //   "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3Mzg0MjEyMDAsImV4cCI6MTczODUwNzYwMH0.zv1U0f9PgavIgQatoHAcConjWanb_sK3W3-iycoBZZ8",
-    //   "tokenType": "Bearer"
-    // });
-
   }
 
   isAuthenticated(): Observable<boolean> {

@@ -20,7 +20,7 @@ export class ToastrComponent {
 
   index = 1;
   destroyByClick = true;
-  duration = 2000;
+  duration = 5000;
   hasIcon = true;
   position: NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
   preventDuplicates = false;
@@ -66,7 +66,7 @@ export class ToastrComponent {
     this.showToast(type, quote.title, quote.body);
   }
 
-  private showToast(type: NbComponentStatus, title: string, body: string) {
+  public showToast(type: NbComponentStatus, title: string, body: string) {
     const config = {
       status: type,
       destroyByClick: this.destroyByClick,

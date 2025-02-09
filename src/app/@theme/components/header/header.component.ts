@@ -8,7 +8,9 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs-compat';
 import { AppState } from '../../../states/app.state';
 import { Store } from '@ngrx/store';
-import { userState } from '../../../states/auth/auth.selectors';
+import { selectUserDetails, userState } from '../../../states/auth/auth.selectors';
+import { UserState } from '../../../states/auth/auth.reducer';
+import { UserDetails } from '../../../interfaces/user.interface';
 
 @Component({
   selector: 'ngx-header',
@@ -20,8 +22,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
-
-  userDetails$: Observable<User>;
 
   themes = [
     {
@@ -45,18 +45,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentTheme = 'default';
 
   userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
-
+  userDetails$: Observable<UserDetails | null>;
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
     private userService: UserData,
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService,
-    private store: Store<AppState>) {
-    // this.userDetails$ = this.store.select(userState);
+    private store: Store<{ userInfo: UserState }>) {
+    this.userDetails$ = this.store.select(selectUserDetails).pipe(
+      map(res => ({ ...res, picture: "assets/images/kate.png" }))
+    );
   }
 
   ngOnInit() {
+
     this.currentTheme = this.themeService.currentTheme;
 
     this.userService.getUsers()

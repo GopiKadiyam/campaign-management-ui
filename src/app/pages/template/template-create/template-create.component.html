@@ -1,47 +1,71 @@
 <div class="row show-grid">
     <div class="col-12 col-sm-12">
-    <nb-card>
+    <nb-card [accent]="(createTemplateForm?.invalid || templateCreationFailed)? 'danger' : 'info'"  [nbSpinner]="createTemplateLoading"
+            nbSpinnerStatus="primary"
+            nbSpinnerSize="large"
+            nbSpinnerMessage="creating template is in progress ...">
         <nb-card-header>Create Sender</nb-card-header>
         <nb-card-body>
           <form class="form-horizontal"  (keyup.enter)="createTemplate()" (ngSubmit)="createTemplate()" [formGroup]="createTemplateForm">
             <div class="form-group row">
                 <label for="forName" class="label col-sm-3 form-control-label">Name</label>
-                <div class="col-sm-9"><input type="text" nbInput formControlName="name" fullWidth placeholder="Name"></div>
+                <div class="col-sm-9">
+                    <input type="text" nbInput formControlName="name" fullWidth placeholder="Name">
+                    <span *ngIf="!name.valid && (name.dirty ||name.touched)" style="color: red;">name is mandatory</span>
+                </div>
             </div>
             <div class="form-group row">
                 <label for="forDescription" class="label col-sm-3 form-control-labell">Description</label>
-                <textarea rows="5" nbInput formControlName="description" class="col-sm-9" fullWidth shape="round"  placeholder="Text Area"></textarea>
+                <div class="col-sm-9">
+                    <textarea rows="5" nbInput formControlName="description" fullWidth shape="round"  placeholder="Text Area"></textarea>
+                    <span *ngIf="!description.valid && (description.dirty ||description.touched)" style="color: red;">description is mandatory</span>
+                </div>
             </div>
             <div class="form-group row">
                 <label for="forSender" class="label col-sm-3 form-control-labell">Sender</label>
-                <nb-select selected="1" class="col-sm-9" formControlName="sender" placeholder="Choose Sender">
-                    <nb-option *ngFor="let senderId of senderIds;"  [value]="senderId">{{senderId}}</nb-option>
-                </nb-select>
+                <div class="col-sm-9">
+                    <nb-select selected="1" formControlName="senderId" placeholder="Choose Sender">
+                        <nb-option *ngFor="let senderId of senderIds;"  [value]="senderId">{{senderId}}</nb-option>
+                    </nb-select>
+                    <span *ngIf="!senderId.valid && (senderId.dirty ||senderId.touched)" style="color: red;">sender is mandatory</span>
+                </div>
             </div>
             <div class="form-group row">
                 <label for="forServiceType" class="label col-sm-3 form-control-labell">Service Type</label>
-                <nb-select selected="1" class="col-sm-9" formControlName="serviceType" placeholder="Choose Service Type">
-                    <nb-option *ngFor="let servType of serviceTypes;"  [value]="servType">{{servType}}</nb-option>
-                </nb-select>
+                <div class="col-sm-9">
+                    <nb-select selected="1" formControlName="serviceType" placeholder="Choose Service Type">
+                        <nb-option *ngFor="let servType of serviceTypes;"  [value]="servType">{{servType}}</nb-option>
+                    </nb-select>
+                    <span *ngIf="!serviceType.valid && (serviceType.dirty ||serviceType.touched)" style="color: red;">serviceType is mandatory</span>
+                </div>    
             </div>
             <div class="form-group row">
                 <label for="forStatus" class="label col-sm-3 form-control-label">Status</label>
                 <div class="col-sm-6"></div>
-                <div class="col-sm-3"><nb-toggle formControlName="status"></nb-toggle></div>
+                <div class="col-sm-3">
+                    <nb-toggle formControlName="status"></nb-toggle>
+                    <span *ngIf="!status.valid && (status.dirty ||status.touched)" style="color: red;">status is mandatory</span>
+                </div>
             </div>
             <div class="form-group row">
                 <label for="forTemplateId" class="label col-sm-3 form-control-labell">Template ID</label>
-                <div class="col-sm-9"><input type="text" nbInput formControlName="templateId" fullWidth placeholder="Template ID"></div>
+                <div class="col-sm-9">
+                    <input type="text" nbInput formControlName="templateId" fullWidth placeholder="Template ID">
+                    <span *ngIf="!templateId.valid && (templateId.dirty ||templateId.touched)" style="color: red;">templateId is mandatory</span>
+                </div>
             </div>
             <div class="form-group row">
                 <label for="forTemplateBody" class="label col-sm-3 form-control-labell">Template Body</label>
-                <textarea rows="5" nbInput formControlName="templateBody" class="col-sm-9" fullWidth shape="round"  placeholder="Text Area"></textarea>
+                <div class="col-sm-9">
+                    <textarea rows="5" nbInput formControlName="templateBody" fullWidth shape="round"  placeholder="Text Area"></textarea>
+                    <span *ngIf="!templateBody.valid && (templateBody.dirty ||templateBody.touched)" style="color: red;">templateBody is mandatory</span>
+                </div>
             </div>
             <div class="form-group row">
                 <div class="offset-sm-3 col-sm-9">
-                  <button type="submit" nbButton status="primary">Create Template</button>
+                  <button type="submit" nbButton status="primary" [disabled]="createTemplateForm?.invalid">Create Template</button>
                 </div>
-              </div>
+            </div>
           </form>  
         </nb-card-body>
     </nb-card>

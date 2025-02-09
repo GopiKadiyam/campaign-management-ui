@@ -6,7 +6,7 @@ import { SenderComponent } from './sender.component';
 import { SenderListComponent } from './sender-list/sender-list.component';
 import { SenderCreateComponent } from './sender-create/sender-create.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-import { NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbSelectModule, NbToggleModule } from '@nebular/theme';
+import { NbButtonModule, NbCardModule, NbIconModule, NbInputModule, NbSelectModule, NbSpinnerModule, NbToggleModule } from '@nebular/theme';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -23,7 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     NbInputModule,
     NbSelectModule,
-    NbToggleModule
+    NbToggleModule,
+    NbSpinnerModule
   ]
 })
 export class SenderModule { }
