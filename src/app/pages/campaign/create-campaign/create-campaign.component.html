@@ -48,7 +48,7 @@
                     <nb-select selected="1" formControlName="templateId" placeholder="Choose Template">
                         <nb-option *ngFor="let templateId of templateIds;"  [value]="templateId">{{templateId}}</nb-option>
                     </nb-select>
-                    <span *ngIf="senderId!==null && senderId!=undefined && templateIds?.length == 0 " style="color: red;">
+                    <span *ngIf="senderId?.value!==null && senderId?.value!=undefined && senderId?.value?.length!=0 && templateIds?.length == 0" style="color: red;">
                         <strong>{{senderId?.value}}</strong> don't have any template Ids. Please check once
                     </span>
                     <span *ngIf="templateIds?.length!=0 && templateId.invalid && (templateId.dirty ||templateId.touched)" style="color: red;">template is mandatory</span>

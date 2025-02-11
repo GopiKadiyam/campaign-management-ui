@@ -61,7 +61,7 @@ export class SenderCreateComponent {
   constructor(private apiService: ApiService, private toaster: ToasterService) { }
 
   createSender() {
-    if (this.createSenderForm?.invalid) {
+    if (this.createSenderForm?.valid) {
       this.createSenderLoading = true;
       console.log(this.createSenderForm.value);
       this.apiService.doPost<any>(API_URL.senderURLs.createSender, this.createSenderForm.value)
